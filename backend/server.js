@@ -30,7 +30,7 @@ app.get("/", (req, res) => {
 
 // ✅ GET USERS
 app.get("/users", async (req, res) => {
-  const session = driver.session({ database: "neo4j" }); // ✅ FIX
+  const session = driver.session({ database: "b37be966" }); // ✅ FIXED
 
   try {
     const result = await session.run("MATCH (u:User) RETURN u");
@@ -42,7 +42,7 @@ app.get("/users", async (req, res) => {
     res.json(users);
   } catch (error) {
     console.error("❌ /users error:", error);
-    res.status(500).json({ error: error.message }); // ✅ SHOW REAL ERROR
+    res.status(500).json({ error: error.message });
   } finally {
     await session.close();
   }
@@ -52,7 +52,7 @@ app.get("/users", async (req, res) => {
 app.post("/add-user", async (req, res) => {
   const { name, skill } = req.body;
 
-  const session = driver.session({ database: "neo4j" }); // ✅ FIX
+  const session = driver.session({ database: "b37be966" }); // ✅ FIXED
 
   try {
     await session.run(
@@ -73,7 +73,7 @@ app.post("/add-user", async (req, res) => {
 app.get("/match/:skill", async (req, res) => {
   const skill = req.params.skill;
 
-  const session = driver.session({ database: "neo4j" }); // ✅ FIX
+  const session = driver.session({ database: "b37be966" }); // ✅ FIXED
 
   try {
     const result = await session.run(
@@ -96,7 +96,7 @@ app.get("/match/:skill", async (req, res) => {
 
 // ✅ DASHBOARD
 app.get("/dashboard", async (req, res) => {
-  const session = driver.session({ database: "neo4j" }); // ✅ FIX
+  const session = driver.session({ database: "b37be966" }); // ✅ FIXED
 
   try {
     const result = await session.run("MATCH (u:User) RETURN u");
