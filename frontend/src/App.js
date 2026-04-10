@@ -8,9 +8,6 @@ function App() {
   const [users, setUsers] = useState([]);
   const [message, setMessage] = useState("");
 
-
-  const BASE_URL = "https://peer-connect-backend.onrender.com";
-
   const showMessage = (msg) => {
     setMessage(msg);
     setTimeout(() => setMessage(""), 2500);
@@ -22,7 +19,7 @@ function App() {
       return;
     }
 
-    await fetch(`${BASE_URL}/add-user`, {
+    await fetch("https://peer-connect-backend-dccs.onrender.com/add-user", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -40,7 +37,7 @@ function App() {
       return;
     }
 
-    const res = await fetch(`${BASE_URL}/match/${skill}`);
+    const res = await fetch(`https://peer-connect-backend-dccs.onrender.com/match/${skill}`);
     const data = await res.json();
     setMatches(data);
 
@@ -52,7 +49,7 @@ function App() {
   };
 
   const getAllUsers = async () => {
-    const res = await fetch(`${BASE_URL}/users`);
+    const res = await fetch("https://peer-connect-backend-dccs.onrender.com/users");
     const data = await res.json();
     setUsers(data);
   };
