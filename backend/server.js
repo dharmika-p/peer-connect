@@ -88,7 +88,7 @@ app.get("/match/:skill", async (req, res) => {
     res.json(users); // ✅ JSON
   } catch (error) {
     console.error("❌ /match error:", error);
-    res.status(500).json({ error: "Error fetching matches" }); // ✅ FIXED
+    res.status(500).json({ error: error.message });
   } finally {
     await session.close();
   }
