@@ -1,3 +1,4 @@
+require("dotenv").config(); // ✅ ADD THIS LINE
 
 const neo4j = require("neo4j-driver");
 

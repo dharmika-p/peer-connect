@@ -10,7 +10,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// 🔍 ENV DEBUG (keep for now)
+// 🔍 ENV DEBUG
 console.log("ENV CHECK:");
 console.log("URI:", process.env.NEO4J_URI);
 console.log("USER:", process.env.NEO4J_USERNAME);
@@ -30,7 +30,7 @@ app.get("/", (req, res) => {
 
 // ✅ GET USERS
 app.get("/users", async (req, res) => {
-  const session = driver.session();
+  const session = driver.session({ database: "neo4j" }); // ✅ FIX
 
   try {
     const result = await session.run("MATCH (u:User) RETURN u");
@@ -39,10 +39,10 @@ app.get("/users", async (req, res) => {
       record.get("u").properties
     );
 
-    res.json(users); // ✅ ALWAYS JSON
+    res.json(users);
   } catch (error) {
     console.error("❌ /users error:", error);
-    res.status(500).json({ error: "Error fetching users" }); // ✅ FIXED
+    res.status(500).json({ error: error.message }); // ✅ SHOW REAL ERROR
   } finally {
     await session.close();
   }
@@ -52,7 +52,7 @@ app.get("/users", async (req, res) => {
 app.post("/add-user", async (req, res) => {
   const { name, skill } = req.body;
 
-  const session = driver.session();
+  const session = driver.session({ database: "neo4j" }); // ✅ FIX
 
   try {
     await session.run(
@@ -60,10 +60,10 @@ app.post("/add-user", async (req, res) => {
       { name, skill }
     );
 
-    res.json({ message: "User added successfully 🚀" }); // ✅ JSON
+    res.json({ message: "User added successfully 🚀" });
   } catch (error) {
     console.error("❌ /add-user error:", error);
-    res.status(500).json({ error: "Error adding user" }); // ✅ FIXED
+    res.status(500).json({ error: error.message });
   } finally {
     await session.close();
   }
@@ -73,7 +73,7 @@ app.post("/add-user", async (req, res) => {
 app.get("/match/:skill", async (req, res) => {
   const skill = req.params.skill;
 
-  const session = driver.session();
+  const session = driver.session({ database: "neo4j" }); // ✅ FIX
 
   try {
     const result = await session.run(
@@ -85,7 +85,7 @@ app.get("/match/:skill", async (req, res) => {
       record.get("u").properties
     );
 
-    res.json(users); // ✅ JSON
+    res.json(users);
   } catch (error) {
     console.error("❌ /match error:", error);
     res.status(500).json({ error: error.message });
@@ -94,9 +94,9 @@ app.get("/match/:skill", async (req, res) => {
   }
 });
 
-// ✅ OPTIONAL DASHBOARD (unchanged but safe)
+// ✅ DASHBOARD
 app.get("/dashboard", async (req, res) => {
-  const session = driver.session();
+  const session = driver.session({ database: "neo4j" }); // ✅ FIX
 
   try {
     const result = await session.run("MATCH (u:User) RETURN u");
